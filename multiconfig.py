@@ -1,3 +1,7 @@
+import yaml
+
+config=None
+
 class MCBackend(object):
 	def load(self, file):
 		raise NotImplementedError("load() must be overridden in a subclass")
@@ -9,10 +13,10 @@ class MCBackend(object):
 		raise NotImplementedError("The backend %s does not support save()"%(self.__class__.__name__,))
 
 	def __init__(self, *files):
+		global config
 		self.reset()
 		for fname in files:
 			self.load(fname)
-		global config
 		if not config:
 			config=self
 
@@ -53,4 +57,7 @@ class MCBackend(object):
 			out=merge_dict(out, conf)
 		return out
 
-config=None
+class YAML(MCBackend):
+	def load(self, file):
+		with open(file, "r") as fp:
+			self.configuration.append(yaml.load(fp))
