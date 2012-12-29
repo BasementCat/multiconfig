@@ -8,8 +8,13 @@ class MCBackend(object):
 	def save(self, file, reloadFile=True):
 		raise NotImplementedError("The backend %s does not support save()"%(self.__class__.__name__,))
 
-	def __init__(self):
+	def __init__(self, *files):
 		self.reset()
+		for fname in files:
+			self.load(fname)
+		global config
+		if not config:
+			config=self
 
 	def reset(self):
 		self.configuration=list()
@@ -49,9 +54,3 @@ class MCBackend(object):
 		return out
 
 config=None
-
-def init(backend, *args):
-	global config
-	config=backend()
-	for fname in args:
-		config.load(fname)
