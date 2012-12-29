@@ -47,3 +47,11 @@ class MCBackend(object):
 		for conf in args:
 			out=merge_dict(out, conf)
 		return out
+
+config=None
+
+def init(backend, *args):
+	global config
+	config=backend()
+	for fname in args:
+		config.load(fname)
