@@ -27,7 +27,7 @@ class MCBackend(object):
 		for conf_outer in self.configuration:
 			conf=conf_outer
 			for part in key.split("/"):
-				if part in conf:
+				if conf and part in conf:
 					conf=conf[part]
 				else:
 					conf=None
