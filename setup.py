@@ -8,7 +8,7 @@ def read(filen):
  
 setup (
     name = "multiconfig",
-    version = "0.1",
+    version = "0.2",
     description="Hierarchical configuration library for Python, supporting cascading configuration files",
     long_description=read("README.md"),
     author="Alec Elton",
@@ -16,6 +16,6 @@ setup (
     url="http://github.com/basementcat/multiconfig",
     packages=["multiconfig", "tests"],
     test_suite="nose.collector",
-    install_requires=[],
+    install_requires=["PyYAML"],
     tests_require=["nose"]
 )

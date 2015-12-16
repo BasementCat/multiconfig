@@ -1,5 +1,7 @@
-import yaml
+import json
 import re
+
+import yaml
 
 exported_backends=[]
 
@@ -33,4 +35,11 @@ class YAML(MCBackend):
 		with open(fname, "r") as fp:
 			return yaml.load(fp)
 
+class JSON(MCBackend):
+	@staticmethod
+	def load(fname):
+		with open(fname, 'r') as fp:
+			return json.load(fp)
+
 register(r"ya?ml", YAML)
+register(r"json", JSON)
