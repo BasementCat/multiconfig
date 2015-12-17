@@ -1,3 +1,5 @@
+import os
+
 import backends
 
 configs=dict()
@@ -21,6 +23,25 @@ class Config(object):
 			raise ConfigurationError("Unsupported filetype: *.%s"%(fname.split(".").pop(),))
 		new_config=backend.load(fname)
 		self.configuration=self._merged(self.configuration, new_config)
+
+	def loadMany(self, candidate_directories=None, candidate_filenames=None, candidate_extensions=None, candidate_files=None):
+		loaded_files = 0
+		test_files = (candidate_files or [])[:]
+		for directory in candidate_directories or []:
+			for filename in candidate_filenames or []:
+				if candidate_extensions:
+					for extension in candidate_extensions:
+						test_files.append(os.path.join(directory, filename + '.' + extension))
+				else:
+					test_files.append(os.path.join(directory, filename))
+
+		for fname in test_files:
+			if os.path.exists(fname) and os.path.isfile(fname):
+				self.load(fname)
+				loaded_files += 1
+
+		if loaded_files == 0:
+			raise ConfigurationError("Loaded 0/{} candidate files".format(len(test_files)), test_files)
 
 	def get(self, key, default=None, do_except=False):
 		conf=self.configuration
